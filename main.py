@@ -12,6 +12,7 @@ from selenium.webdriver.support.ui import WebDriverWait
 from selenium.webdriver.support import expected_conditions as EC
 from webdriver_manager.chrome import ChromeDriverManager
 from selenium_stealth import stealth  # For stealth mode
+from selenium.webdriver.chrome.options import Options
 
 # --- Configuration ---
 USERNAME = "info@rutlandvapes.com"  # Replace with your username
@@ -65,8 +66,13 @@ def run_job(csv_file):
     print(f"Created randomized CSV file: {randomized_csv_file}")
     
     # Setup Selenium with Chrome.
+    options = Options()
+    options.add_argument("--headless=new")  # Use "--headless" if needed.
+    options.add_argument("--no-sandbox")
+    options.add_argument("--disable-dev-shm-usage")
+
     service = ChromeService(ChromeDriverManager().install())
-    driver = webdriver.Chrome(service=service)
+    driver = webdriver.Chrome(service=service, options=options)
     
     # --- Implement stealth technique ---
     stealth(driver,
